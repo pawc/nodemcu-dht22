@@ -1,0 +1,30 @@
+version: '2.0'
+
+services:
+  mariadb:
+    image: pawc/mariadb:10.7.3
+    restart: unless-stopped
+    container_name: mariadb-arduino
+    environment:
+      - MYSQL_DATABASE=arduino
+      - MYSQL_USER=arduino
+      - MYSQL_PASSWORD=
+      - MYSQL_ROOT_PASSWORD=
+      - MYSQL_ROOT_HOST=arduino
+      - TZ=Europe/Warsaw
+    ports:
+      - "3307:3306"
+  arduino:
+    image: pawc/arduino
+    container_name: arduino
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+    environment:
+      - spring.datasource.url=jdbc:mysql://mariadb-arduino:3306/arduino
+      - spring.jpa.hibernate.ddl-auto=update
+      - spring.datasource.username=
+      - spring.datasource.password=
+      - spring.jackson.serialization.FAIL_ON_EMPTY_BEANS=false
+    depends_on:
+      - mariadb
