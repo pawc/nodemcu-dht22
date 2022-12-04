@@ -33,15 +33,32 @@ class App extends React.Component {
 
   constructor(props){
     super(props);
+
+    let pathName = window.location.pathname;
+    pathName = pathName.substring(1, pathName.length)
+
+    let dateStart = new Date(new Date().setHours(new Date().getHours() - 5));
+
+    let locations = []
+    if(pathName){
+      locations.push({
+        label: pathName,
+        value: pathName
+      })
+    }
+
     this.state = {
-      dateStart: new Date(),
+      dateStart: dateStart,
+      pathName: pathName,
       dateEnd: new Date(),
-      locations: new Object({}),
+      locations: locations,
       chartData: {
         "labels": [],
         "datasets": [],
       }
     }
+
+    this.updateChart()
 
   }
 
@@ -109,7 +126,7 @@ class App extends React.Component {
               labels: labels.sort().map(label => label.substring(0, label.length-3).replace('T', ' ')),
               datasets: datasets
             }
-          }, () => {console.log(this.state.chartData)})
+          })
         })
          
       }
@@ -162,7 +179,7 @@ class App extends React.Component {
           width={1200}
         >
         <div key="selectDiv">
-          <MySelect onChange={this.handleChangeSelect}/>
+          <MySelect onChange={this.handleChangeSelect} value={this.state.pathName}/>
         </div>
         <div key="dateStartDiv">
           <MyDateTimePicker 
