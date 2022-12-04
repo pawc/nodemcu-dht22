@@ -23,7 +23,6 @@ fetch(url)
 export function MySelect(props){  
   return (
     <Select
-      multi
       options={locations}
       onChange={props.onChange}
     />
