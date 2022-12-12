@@ -14,5 +14,6 @@ public interface RecordRepository extends CrudRepository<Record, Long> {
 
     List<Record> findAllByTimestampBetween(LocalDateTime start, LocalDateTime end);
     List<Record> findAllByLocationNameAndTimestampBetween(String location, LocalDateTime start, LocalDateTime end);
+    Record findFirstByLocationNameOrderByTimestampDesc(String location);
 
 }

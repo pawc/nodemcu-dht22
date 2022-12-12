@@ -1,6 +1,7 @@
 import './App.css';
 import { MySelect } from './components/MySelect';
 import MyDateTimePicker from './components/MyDateTimePicker';
+import LatestRecord from './components/LatestRecord';
 import React from 'react';
 import dateFormat from 'dateformat';
 import {
@@ -193,6 +194,8 @@ class App extends React.Component {
         </div>
         </GridLayout>
         <Line options={options} data={this.state.chartData} />
+        <hr/>
+        <LatestRecord location={this.state.pathName}/>
       </div>
     );
   }

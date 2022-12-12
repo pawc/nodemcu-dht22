@@ -72,7 +72,7 @@ public class RecordController {
 
     }
 
-    @GetMapping("/location/{location}")
+    @GetMapping("/{location}")
     @CrossOrigin
     public List<Record> getByLocation(
             @PathVariable String location,
@@ -120,7 +120,30 @@ public class RecordController {
 
     }
 
-    @PostMapping("/location/{location}")
+    @GetMapping("/{location}/latest")
+    @CrossOrigin
+    public Record getLastByLocationName(
+        @PathVariable String location,
+        HttpServletResponse response,
+        @RequestParam("pass") String passwordInput){
+
+        if(!password.equals(passwordInput)){
+            response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+            return null;
+        }
+
+        Location locationByName = locationRepository.findOneByName(location);
+
+        if(locationByName == null){
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            return null;
+        }
+
+        return recordRepository.findFirstByLocationNameOrderByTimestampDesc(location);
+
+    }
+
+    @PostMapping("/{location}")
     public void post(HttpServletResponse response,
          @PathVariable String location,
          @RequestParam("t") String temperatureInput,

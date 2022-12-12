@@ -9,15 +9,12 @@ const locations = []
 fetch(url)
   .then((response) => response.json())
   .then((data) => {
-    console.log(data)
-    console.log(data.length)
     for (let i=0; i < data.length; i++) {
         locations.push({
             label: data[i].name,
             value: data[i].name
         })
     }
-    console.log(locations)
   })
 
 export function MySelect(props){  
