@@ -128,9 +128,25 @@ class App extends React.Component {
               datasets: datasets
             }
           })
+        })  
+        
+        fetch(BACK_URL  + this.state.locations[i].value + '/latest?pass=' + BACK_PASS)
+        .then((response) => response.json())
+        .then((data) => {
+            let date = data.timestamp.substring(0, data.timestamp.length-3).replace('T', ' ').split(' ')[0]
+            let time = data.timestamp.substring(0, data.timestamp.length-3).replace('T', ' ').split(' ')[1]
+            this.setState({
+                location: this.state.locations[i].value,
+                date: date,
+                time: time,
+                temperature: data.temperature,
+                humidity: data.humidity,
+                downloaded: true
+            })
         })
-         
+
       }
+
     }
 
   }
@@ -195,7 +211,8 @@ class App extends React.Component {
         </GridLayout>
         <Line options={options} data={this.state.chartData} />
         <hr/>
-        <LatestRecord location={this.state.pathName}/>
+        <LatestRecord location={this.state.location} date={this.state.date}
+          time={this.state.time} temperature={this.state.temperature} humidity={this.state.humidity}/>
       </div>
     );
   }
